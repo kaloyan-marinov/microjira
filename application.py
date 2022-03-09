@@ -1,7 +1,7 @@
 import os
 import sys
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -36,6 +36,12 @@ class Project(db.Model):
     def __repr__(self):
         return f"<Project (id={self.id}, name={self.name})>"
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+        }
+
 
 class Issue(db.Model):
     __tablename__ = "issues"
@@ -56,7 +62,21 @@ class Issue(db.Model):
         return f"<Issue (id={self.id})>"
 
 
-@app.route("/")
-def home():
-    r = jsonify({"message": "Hello World!"})
+@app.route("/api/projects", methods=["POST"])
+def create_project():
+    name = request.json.get("name")
+    if name is None:
+        r = jsonify(
+            {
+                "message": "Your request body must contain a name key",
+            }
+        )
+        r.status = 400
+        return r
+
+    p = Project(name=name)
+    db.session.add(p)
+    db.session.commit()
+    r = jsonify(p.to_dict())
+    r.status = 201
     return r
