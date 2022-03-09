@@ -10,6 +10,17 @@ $ source venv/bin/activate
 (venv) $ pip install -r requirements.txt
 ```
 
+```
+(venv) $ cp .env.template .env
+
+# Edit the content of `.env` as per the comments/instructions therein.
+
+(venv) $ FLASK_APP=application.py flask db upgrade
+
+(venv) $ ll *.sqlite
+-rw-r--r--  1 <user-owner>  <group-owner>    24K Mar  9 06:53 database.sqlite
+```
+
 # Serve the application and issue requests to it
 
 ```
