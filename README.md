@@ -8,7 +8,7 @@ $ cp .env.template .env
 
 # Options for serving the application and issuing requests to it
 
-1. Locally
+1. Using Docker to serve the persistence layer, but locally serving the Flask application:
 
     ```
     $ python3 --version
@@ -21,10 +21,18 @@ $ cp .env.template .env
     ```
 
     ```
-    (venv) $ FLASK_APP=application.py flask db upgrade
+    docker run \
+        --name container-mini-jira-mysql \
+        --add-host host.docker.internal:host-gateway \
+        --mount source=volume-mini-jira-mysql,destination=/var/lib/mysql \
+        --env-file .env \
+        --publish 3307:3306 \
+        mysql:8.0.26 \
+        --default-authentication-plugin=mysql_native_password
+    ```
 
-    (venv) $ ll *.sqlite
-    -rw-r--r--  1 <user-owner>  <group-owner>    24K Mar  9 06:53 database.sqlite
+    ```
+    (venv) $ FLASK_APP=application.py flask db upgrade
     ```
 
     ```
@@ -73,11 +81,12 @@ $ cp .env.template .env
     ```
 
 2. Using Docker
+   (THIS OPTION IS CURRENTLY *NOT UP-TO-DATE*; IT WILL BE UPDATED IN THE NEXT COMMIT)
 
     ```
     $ docker build \
       --file Dockerfile \
-      --tag image-mini-jira:2022-08-21-10-54 \
+      --tag image-mini-jira:2022-08-21-11-03 \
       .
 
     $ docker run \
@@ -86,7 +95,7 @@ $ cp .env.template .env
       --publish 8000:5000 \
       --rm \
       --detach \
-      image-mini-jira:2022-08-21-10-54
+      image-mini-jira:2022-08-21-11-03
     ```
 
     ```
