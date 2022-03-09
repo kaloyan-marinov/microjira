@@ -77,7 +77,7 @@ $ cp .env.template .env
     ```
     $ docker build \
       --file Dockerfile \
-      --tag image-mini-jira:2022-08-21-10-50 \
+      --tag image-mini-jira:2022-08-21-10-54 \
       .
 
     $ docker run \
@@ -86,7 +86,7 @@ $ cp .env.template .env
       --publish 8000:5000 \
       --rm \
       --detach \
-      image-mini-jira:2022-08-21-10-50
+      image-mini-jira:2022-08-21-10-54
     ```
 
     ```
@@ -96,5 +96,39 @@ $ cp .env.template .env
     100    26  100    26    0     0    220      0 --:--:-- --:--:-- --:--:--   433
     {
       "health-check" : "passed"
+    }
+
+    $ curl localhost:8000/api/projects | json_pp
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100    16  100    16    0     0    139      0 --:--:-- --:--:-- --:--:--   177
+    {
+      "projects" : []
+    }
+
+    $ curl \
+      -X POST \
+      -H "Content-Type: application/json" \
+      -d '{"name": "Build a basic web application using Flask"}' \
+      localhost:8000/api/projects \
+      | json_pp
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100   113  100    60  100    53    642    567 --:--:-- --:--:-- --:--:--  1793
+    {
+      "id" : 1,
+      "name" : "Build a basic web application using Flask"
+    }
+
+    $ curl localhost:8000/api/projects | json_pp
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100    68  100    68    0     0    945      0 --:--:-- --:--:-- --:--:--  2720
+    {
+      "projects" : [
+          {
+            "name" : "Build a basic web application using Flask"
+          }
+      ]
     }
     ```
