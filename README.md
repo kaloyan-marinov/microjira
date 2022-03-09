@@ -26,7 +26,7 @@ $ cp .env.template .env
         --add-host host.docker.internal:host-gateway \
         --mount source=volume-mini-jira-mysql,destination=/var/lib/mysql \
         --env-file .env \
-        --publish 3307:3306 \
+        --publish 3306:3306 \
         mysql:8.0.26 \
         --default-authentication-plugin=mysql_native_password
     ```
@@ -81,21 +81,19 @@ $ cp .env.template .env
     ```
 
 2. Using Docker
-   (THIS OPTION IS CURRENTLY *NOT UP-TO-DATE*; IT WILL BE UPDATED IN THE NEXT COMMIT)
 
     ```
-    $ docker build \
-      --file Dockerfile \
-      --tag image-mini-jira:2022-08-21-11-03 \
-      .
-
-    $ docker run \
-      --name container-mini-jira \
-      --env-file .env \
-      --publish 8000:5000 \
-      --rm \
-      --detach \
-      image-mini-jira:2022-08-21-11-03
+    $ DB_ENGINE_HOSTNAME=container-mini-jira-mysql docker compose \
+        --env-file .env \
+        config
+    
+    $ DB_ENGINE_HOSTNAME=container-mini-jira-mysql docker compose \
+        --env-file .env \
+        build
+    
+    $ DB_ENGINE_HOSTNAME=container-mini-jira-mysql docker compose \
+        --env-file .env \
+        up
     ```
 
     ```
@@ -136,6 +134,7 @@ $ cp .env.template .env
     {
       "projects" : [
           {
+            "id": 1,
             "name" : "Build a basic web application using Flask"
           }
       ]
