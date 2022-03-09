@@ -80,3 +80,11 @@ def create_project():
     r = jsonify(p.to_dict())
     r.status = 201
     return r
+
+
+@app.route("/api/projects", methods=["GET"])
+def get_projects():
+    projects = Project.query.all()
+    return {
+        "projects": [p.to_dict() for p in projects],
+    }

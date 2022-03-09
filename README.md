@@ -30,7 +30,15 @@ $ source venv/bin/activate
 ```
 
 ```
-# Launch a second terminal instance and, in it, issue a request to the application:
+# Launch a second terminal instance and, in it, issue requests to the application:
+
+$ curl localhost:5000/api/projects | json_pp
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    16  100    16    0     0    106      0 --:--:-- --:--:-- --:--:--   131
+{
+   "projects" : []
+}
 
 $ curl \
     -X POST \
@@ -44,5 +52,18 @@ $ curl \
 {
    "id" : 1,
    "name" : "Build a basic web application using Flask"
+}
+
+$ curl localhost:5000/api/projects | json_pp
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    75  100    75    0     0   1975      0 --:--:-- --:--:-- --:--:--  8333
+{
+   "projects" : [
+      {
+         "id" : 1,
+         "name" : "Build a basic web application using Flask"
+      }
+   ]
 }
 ```
