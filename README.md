@@ -8,7 +8,7 @@ $ cp .env.template .env
 
 # Options for serving the application and issuing requests to it
 
-1. Using Docker to serve the persistence layer, but locally serving the Flask application:
+1. Using Docker to serve the persistence layer, but using `localhost` (= the local network interface) to serve the Flask application:
 
     ```
     $ python3 --version
@@ -80,7 +80,7 @@ $ cp .env.template .env
     }
     ```
 
-2. Using Docker
+2. Using Docker to serve both the persistence layer and the Flask application:
 
     ```
     $ DB_ENGINE_HOSTNAME=container-mini-jira-mysql docker compose \
