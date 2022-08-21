@@ -46,7 +46,7 @@ jobs:
               > line-with-the-TOTAL.txt
 
           read -r -a arr <<< $(grep TOTAL line-with-the-TOTAL.txt)
-          coverage_percentage=${arr[3]}
+          coverage_percentage=${arr[5]}
 
           badge_url="![badge-test-coverage](https://img.shields.io/static/v1?label=test-coverage&message=${coverage_percentage}25&color=black)"
           echo "::set-output name=badge-url::${badge_url}"
