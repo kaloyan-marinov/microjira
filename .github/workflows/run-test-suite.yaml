@@ -2,11 +2,12 @@ name: workflows_run-test-suite
 
 on:
   push:
-    branches: 
-      - main
+    branches:
+      - "feature/*/*"
   pull_request:
     branches:
       - main
+      - develop
 
 jobs:
 
@@ -37,7 +38,12 @@ jobs:
           # Using the `-m` flag to run this python command
           # will add the current directory to `sys.path`.
           # python -m pytest
-          PYTHONPATH=. pytest --cov=src/ --cov-report=term-missing > line-with-the-TOTAL.txt
+          pytest \
+              --cov=application \
+              --cov-report=term-missing \
+              --cov-branch \
+              test* \
+              > line-with-the-TOTAL.txt
 
           read -r -a arr <<< $(grep TOTAL line-with-the-TOTAL.txt)
           coverage_percentage=${arr[3]}
