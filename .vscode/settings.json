@@ -9,9 +9,9 @@
     "-p",
     "*test*.py"
   ],
-  "python.testing.pytestEnabled": false,
+  "python.testing.pytestEnabled": true,
   "python.testing.nosetestsEnabled": false,
-  "python.testing.unittestEnabled": true,
+  "python.testing.unittestEnabled": false,
   
   "python.formatting.provider": "black",
   "python.formatting.blackPath": "venv/bin/black",
@@ -26,5 +26,8 @@
 
   "editor.acceptSuggestionOnCommitCharacter": false,
 
-  "restructuredtext.confPath": ""
+  "restructuredtext.confPath": "",
+  "python.testing.pytestArgs": [
+    "."
+  ]
 }
