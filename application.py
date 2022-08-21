@@ -12,7 +12,14 @@ MYSQL_DATABASE = os.environ.get("MYSQL_DATABASE")
 MYSQL_USER = os.environ.get("MYSQL_USER")
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD")
 
-if (
+if os.environ.get("SQLALCHEMY_DATABASE_URI") == "sqlite://":
+    # This module is imported by a module, in which unit tests are defined.
+    # For the sake of running those unit tests,
+    # do not enforce any database-related checks.
+    # (Each module, in which unit tests are defined, must provision
+    # its own in-memory SQLite database.)
+    DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URI")
+elif (
     DB_ENGINE_HOSTNAME is None
     or MYSQL_DATABASE is None
     or MYSQL_USER is None
@@ -26,9 +33,8 @@ if (
         " as environment variables - aborting ..."
     )
     sys.exit(1)
-
-
-DATABASE_URL = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{DB_ENGINE_HOSTNAME}:3306/{MYSQL_DATABASE}"
+else:
+    DATABASE_URL = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{DB_ENGINE_HOSTNAME}:3306/{MYSQL_DATABASE}"
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
@@ -89,7 +95,7 @@ def create_project():
     if name is None:
         r = jsonify(
             {
-                "message": "Your request body must contain a name key",
+                "message": "Your request body must contain a 'name' key",
             }
         )
         r.status = 400

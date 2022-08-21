@@ -21,6 +21,14 @@ $ cp .env.template .env
     ```
 
     ```
+    (venv) $ pytest \
+        --cov=application \
+        --cov-report=term-missing \
+        --cov-branch \
+        test* 
+    ```
+
+    ```
     docker run \
         --name container-mini-jira-mysql \
         --add-host host.docker.internal:host-gateway \
