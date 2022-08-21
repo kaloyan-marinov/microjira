@@ -38,12 +38,7 @@ jobs:
           # Using the `-m` flag to run this python command
           # will add the current directory to `sys.path`.
           # python -m pytest
-          pytest \
-              --cov=application \
-              --cov-report=term-missing \
-              --cov-branch \
-              test* \
-              > line-with-the-TOTAL.txt
+          pytest --cov=application --cov-report=term-missing --cov-branch test* > line-with-the-TOTAL.txt
 
           read -r -a arr <<< $(grep TOTAL line-with-the-TOTAL.txt)
           coverage_percentage=${arr[3]}
