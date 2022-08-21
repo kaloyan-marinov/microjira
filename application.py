@@ -6,13 +6,29 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
-if DATABASE_URL is None:
+DB_ENGINE_HOSTNAME = os.environ.get("DB_ENGINE_HOSTNAME")
+
+MYSQL_DATABASE = os.environ.get("MYSQL_DATABASE")
+MYSQL_USER = os.environ.get("MYSQL_USER")
+MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD")
+
+if (
+    DB_ENGINE_HOSTNAME is None
+    or MYSQL_DATABASE is None
+    or MYSQL_USER is None
+    or MYSQL_PASSWORD is None
+):
     print(
         "To run this module,"
-        " you must set a `DATABASE_URL` environment variable - aborting ..."
+        " you must set each of"
+        " `DB_ENGINE_HOSTNAME`, `MYSQL_DATABASE`, `MYSQL_USER`,"
+        " `MYSQL_PASSWORD`"
+        " as environment variables - aborting ..."
     )
     sys.exit(1)
+
+
+DATABASE_URL = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{DB_ENGINE_HOSTNAME}:3306/{MYSQL_DATABASE}"
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
@@ -60,6 +76,11 @@ class Issue(db.Model):
 
     def __repr__(self):
         return f"<Issue (id={self.id})>"
+
+
+@app.route("/api/health-check", methods=["GET"])
+def health_check():
+    return {"health-check": "passed"}
 
 
 @app.route("/api/projects", methods=["POST"])
