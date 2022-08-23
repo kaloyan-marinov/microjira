@@ -22,6 +22,17 @@ COPY application.py ./
 COPY boot.sh ./
 RUN chmod a+x boot.sh
 
+# declare build-time variables
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG AWS_REGION
+ARG FLASK_SECRET_KEY
+
+
+ENV AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
+ENV AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
+ENV AWS_REGION $AWS_REGION
+ENV FLASK_SECRET_KEY $FLASK_SECRET_KEY
 ENV FLASK_APP application.py
 
 RUN chown -R the-mighty-user:the-mighty-user ./
