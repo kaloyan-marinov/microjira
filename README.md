@@ -1,3 +1,5 @@
+[![workflows_run-test-suite](https://github.com/kaloyan-marinov/rename/actions/workflows/run-test-suite.yml/badge.svg)](https://github.com/kaloyan-marinov/rename/actions/workflows/run-test-suite.yml)
+
 # Common setup
 
 ```
@@ -18,6 +20,14 @@ $ cp .env.template .env
     $ source venv/bin/activate
     (venv) $ pip install --upgrade pip
     (venv) $ pip install -r requirements.txt
+    ```
+
+    ```
+    (venv) $ pytest \
+        --cov=application \
+        --cov-report=term-missing \
+        --cov-branch \
+        test* 
     ```
 
     ```
