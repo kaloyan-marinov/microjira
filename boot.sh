@@ -15,4 +15,4 @@ while true; do
     sleep 5
 done
 
-exec gunicorn -b :5000 --access-logfile - --error-logfile - application:app
+exec gunicorn -b :8000 --access-logfile - --error-logfile - application:app
