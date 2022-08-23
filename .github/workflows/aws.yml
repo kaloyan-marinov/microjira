@@ -27,9 +27,9 @@
 name: Deploy to Amazon ECS
 
 on:
-  release:
-    type: [created]
-  # run manually
+  # release:
+  #   type: [created]
+  # # run manually
   workflow_dispatch:
 
 env:
