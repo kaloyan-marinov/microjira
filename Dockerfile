@@ -16,32 +16,11 @@ RUN venv/bin/pip install --upgrade pip \
  && venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn
 
-COPY migrations migrations
+# COPY migrations migrations
 COPY application.py ./
 
-COPY boot.sh ./
-RUN chmod a+x boot.sh
-
-# declare build-time variables
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ARG AWS_REGION
-ARG FLASK_SECRET_KEY
-
-ARG DB_ENGINE_HOSTNAME
-ARG MYSQL_DATABASE
-ARG MYSQL_USER
-ARG MYSQL_PASSWORD
-
-ENV AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
-ENV AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
-ENV AWS_REGION $AWS_REGION
-ENV FLASK_SECRET_KEY $FLASK_SECRET_KEY
-
-ENV DB_ENGINE_HOSTNAME $DB_ENGINE_HOSTNAME
-ENV MYSQL_DATABASE $MYSQL_DATABASE
-ENV MYSQL_USER $MYSQL_USER
-ENV MYSQL_PASSWORD $MYSQL_PASSWORD
+# COPY boot.sh ./
+# RUN chmod a+x boot.sh
 
 ENV FLASK_APP application.py
 
@@ -49,4 +28,4 @@ RUN chown -R the-mighty-user:the-mighty-user ./
 USER the-mighty-user
 
 EXPOSE 5000
-ENTRYPOINT ["./boot.sh"]
+ENTRYPOINT ["venv/bin/gunicorn", "-b", ":5000", "--access-logfile", "-", "--error-logfile", "-", "application:app"]
