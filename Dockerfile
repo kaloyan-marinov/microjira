@@ -19,8 +19,8 @@ RUN venv/bin/pip install gunicorn
 # COPY migrations migrations
 COPY application.py ./
 
-# COPY boot.sh ./
-# RUN chmod a+x boot.sh
+COPY boot.sh ./
+RUN chmod a+x boot.sh
 
 # declare build-time variables
 ARG AWS_ACCESS_KEY_ID
@@ -37,4 +37,4 @@ RUN chown -R the-mighty-user:the-mighty-user ./
 USER the-mighty-user
 
 EXPOSE 5000
-ENTRYPOINT ["venv/bin/gunicorn", "-b", ":5000", "--access-logfile", "-", "--error-logfile", "-", "application:app"]
+ENTRYPOINT ["./boot.sh"]

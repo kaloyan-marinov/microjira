@@ -31,7 +31,6 @@ on:
     type: [created]
   # run manually
   workflow_dispatch:
-  pull_request:
 
 env:
   AWS_REGION: us-east-1
