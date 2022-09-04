@@ -27,9 +27,9 @@
 name: workflows_deploy-to-amazon
 
 on:
-  release:
-    type: [created]
-  # run manually
+  # Specifying the following event as a trigger for this workflow
+  # makes it possible to manually run this workflow
+  # by interacting with the GitHub website (= web UI), GitHub CLI, or GitHub API.
   workflow_dispatch:
 
 env:
