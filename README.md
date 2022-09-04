@@ -1,69 +1,76 @@
-# Set up the project
+[![workflows_run-test-suite](https://github.com/kaloyan-marinov/rename/actions/workflows/run-test-suite.yml/badge.svg)](https://github.com/kaloyan-marinov/rename/actions/workflows/run-test-suite.yml)
 
-```
-$ python3 --version
-Python 3.8.3
+# Common setup
 
-$ python3 -m venv venv
-$ source venv/bin/activate
-(venv) $ pip install --upgrade pip
-(venv) $ pip install -r requirements.txt
-```
+There is nothing to set up.
 
-```
-(venv) $ cp .env.template .env
+# Options for serving the application and issuing requests to it
 
-# Edit the content of `.env` as per the comments/instructions therein.
+1. Using `localhost` (= the local network interface) to serve the Flask application:
 
-(venv) $ FLASK_APP=application.py flask db upgrade
+    ```
+    $ python3 --version
+    Python 3.8.3
 
-(venv) $ ll *.sqlite
--rw-r--r--  1 <user-owner>  <group-owner>    24K Mar  9 06:53 database.sqlite
-```
+    $ python3 -m venv venv
+    $ source venv/bin/activate
+    (venv) $ pip install --upgrade pip
+    (venv) $ pip install -r requirements.txt
+    ```
 
-# Serve the application and issue requests to it
+    ```
+    (venv) $ pytest \
+        --cov=application \
+        --cov-report=term-missing \
+        --cov-branch \
+        test*
+    ```
 
-```
-# Launch one terminal instance and, in it, start serving the application:
+    ```
+    # Launch one terminal instance and, in it, start serving the application:
 
-(venv) $ FLASK_APP=application.py flask run
-```
+    (venv) $ FLASK_APP=application.py flask run
+    ```
 
-```
-# Launch a second terminal instance and, in it, issue requests to the application:
+    ```
+    # Launch a second terminal instance and, in it, issue requests to the application:
 
-$ curl localhost:5000/api/projects | json_pp
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100    16  100    16    0     0    106      0 --:--:-- --:--:-- --:--:--   131
-{
-   "projects" : []
-}
+    $ curl localhost:5000/api/health-check | json_pp
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100    26  100    26    0     0   1018      0 --:--:-- --:--:-- --:--:--  3714
+    {
+      "health-check" : "passed"
+    }
+    ```
 
-$ curl \
-    -X POST \
-    -H "Content-Type: application/json" \
-    -d '{"name": "Build a basic web application using Flask"}' \
-    localhost:5000/api/projects \
-    | json_pp
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   113  100    60  100    53    521    460 --:--:-- --:--:-- --:--:--   982
-{
-   "id" : 1,
-   "name" : "Build a basic web application using Flask"
-}
+2. Using Docker to serve both the persistence layer and the Flask application:
 
-$ curl localhost:5000/api/projects | json_pp
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100    75  100    75    0     0   1975      0 --:--:-- --:--:-- --:--:--  8333
-{
-   "projects" : [
-      {
-         "id" : 1,
-         "name" : "Build a basic web application using Flask"
-      }
-   ]
-}
-```
+    ```
+    $ docker build \
+        --file Dockerfile \
+        --tag image-mini-jira:2022-09-04-20-28 \
+        .
+    ```
+
+    ```
+    $ docker run \
+        --name container-mini-jira \
+        --publish 5000:5000 \
+        --detach \
+        image-mini-jira:2022-09-04-20-28
+    
+    $ docker container logs \
+        container-mini-jira \
+        --follow
+    ```
+
+    ```
+    $ curl localhost:5000/api/health-check | json_pp
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100    26  100    26    0     0    220      0 --:--:-- --:--:-- --:--:--   433
+    {
+      "health-check" : "passed"
+    }
+    ```
