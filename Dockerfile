@@ -16,20 +16,11 @@ RUN venv/bin/pip install --upgrade pip \
  && venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn
 
-# COPY migrations migrations
+COPY migrations migrations
 COPY application.py ./
 
 COPY boot.sh ./
 RUN chmod a+x boot.sh
-
-# declare build-time variables
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ARG AWS_REGION
-
-ENV AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
-ENV AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
-ENV AWS_REGION $AWS_REGION
 
 ENV FLASK_APP application.py
 
