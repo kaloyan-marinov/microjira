@@ -49,11 +49,11 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), unique=True, nullable=False)
 
-    issues = db.relationship(
-        "Issue",
-        backref="parent_project",
-        cascade="all, delete, delete-orphan",
-    )
+    # issues = db.relationship(
+    #     "Issue",
+    #     backref="parent_project",
+    #     cascade="all, delete, delete-orphan",
+    # )
 
     def __repr__(self):
         return f"<Project (id={self.id}, name={self.name})>"
@@ -65,23 +65,23 @@ class Project(db.Model):
         }
 
 
-class Issue(db.Model):
-    __tablename__ = "issues"
+# class Issue(db.Model):
+#     __tablename__ = "issues"
 
-    id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.Text, nullable=False)
+#     id = db.Column(db.Integer, primary_key=True)
+#     description = db.Column(db.Text, nullable=False)
 
-    project_id = db.Column(
-        db.Integer,
-        db.ForeignKey(
-            "projects.id",
-            ondelete="cascade",
-        ),
-        nullable=False,
-    )
+#     project_id = db.Column(
+#         db.Integer,
+#         db.ForeignKey(
+#             "projects.id",
+#             ondelete="cascade",
+#         ),
+#         nullable=False,
+#     )
 
-    def __repr__(self):
-        return f"<Issue (id={self.id})>"
+#     def __repr__(self):
+#         return f"<Issue (id={self.id})>"
 
 
 @app.route("/api/health-check", methods=["GET"])

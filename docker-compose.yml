@@ -18,7 +18,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: image-mini-jira-backend:2022-08-21-11-43
+    image: image-mini-jira-backend:2022-09-10-22-35
     container_name: container-mini-jira-backend
     depends_on:
       - service-mysql
@@ -30,7 +30,7 @@ services:
     expose:
       - "5000"
     ports:
-      - "8000:5000"
+      - "5000:5000"
 
 volumes:
   volume-mini-jira-mysql:

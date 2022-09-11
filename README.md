@@ -27,7 +27,7 @@ $ cp .env.template .env
         --cov=application \
         --cov-report=term-missing \
         --cov-branch \
-        test* 
+        test*
     ```
 
     ```
@@ -53,6 +53,14 @@ $ cp .env.template .env
 
     ```
     # Launch a second terminal instance and, in it, issue requests to the application:
+
+    $ curl localhost:5000/api/health-check | json_pp
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100    26  100    26    0     0   1328      0 --:--:-- --:--:-- --:--:--  3714
+    {
+      "health-check" : "passed"
+    }
 
     $ curl localhost:5000/api/projects | json_pp
       % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -107,7 +115,7 @@ $ cp .env.template .env
     ```
 
     ```
-    $ curl localhost:8000/api/health-check | json_pp
+    $ curl localhost:5000/api/health-check | json_pp
       % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                     Dload  Upload   Total   Spent    Left  Speed
     100    26  100    26    0     0    220      0 --:--:-- --:--:-- --:--:--   433
@@ -115,7 +123,7 @@ $ cp .env.template .env
       "health-check" : "passed"
     }
 
-    $ curl localhost:8000/api/projects | json_pp
+    $ curl localhost:5000/api/projects | json_pp
       % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                     Dload  Upload   Total   Spent    Left  Speed
     100    16  100    16    0     0    139      0 --:--:-- --:--:-- --:--:--   177
@@ -127,7 +135,7 @@ $ cp .env.template .env
       -X POST \
       -H "Content-Type: application/json" \
       -d '{"name": "Build a basic web application using Flask"}' \
-      localhost:8000/api/projects \
+      localhost:5000/api/projects \
       | json_pp
       % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                     Dload  Upload   Total   Spent    Left  Speed
@@ -137,7 +145,7 @@ $ cp .env.template .env
       "name" : "Build a basic web application using Flask"
     }
 
-    $ curl localhost:8000/api/projects | json_pp
+    $ curl localhost:5000/api/projects | json_pp
       % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                     Dload  Upload   Total   Spent    Left  Speed
     100    68  100    68    0     0    945      0 --:--:-- --:--:-- --:--:--  2720
