@@ -16,7 +16,7 @@ RUN venv/bin/pip install --upgrade pip \
  && venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn
 
-# COPY migrations migrations
+COPY migrations migrations
 COPY application.py ./
 
 COPY boot.sh ./
